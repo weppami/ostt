@@ -23,3 +23,9 @@ jobs:
         uses: akhilmhdh/contributors-readme-action@v2.3.6
         env:
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Commit changes
+        run: |
+          git config --local user.email "action@github.com"
+          git config --local user.name "GitHub Action"
+          git diff --exit-code || (git add README.md .all-contributorsrc && git commit -m "docs: update contributors" && git push)
