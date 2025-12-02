@@ -1,0 +1,26 @@
+name: All Contributors
+
+on:
+  pull_request:
+    types: [opened, closed, reopened]
+  issues:
+    types: [opened, closed, reopened]
+
+permissions:
+  contents: write
+  pull-requests: write
+
+jobs:
+  add-contributors:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
+
+      - name: Add contributors
+        uses: action-all-contributors/add-contributors@v0.5.1
+        with:
+          commitConvention: conventional
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          skipCI: true

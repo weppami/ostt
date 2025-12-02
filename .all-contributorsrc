@@ -1,0 +1,17 @@
+{
+  "files": [
+    "README.md"
+  ],
+  "imageSize": 100,
+  "commit": false,
+  "commitConvention": "conventional",
+  "contributors": [],
+  "contributorsPerLine": 7,
+  "contributorTemplate": "[![${login}](${avatar_url}?s=100)](${profile_link})\n${contribution}",
+  "skipCi": true,
+  "repoType": "github",
+  "repoHost": "https://github.com",
+  "projectName": "ostt",
+  "projectOwner": "kristoferlund",
+  "badgeTemplate": "<!-- ALL-CONTRIBUTORS-BADGE:START - Do not remove or modify this section -->\n[![All Contributors](https://img.shields.io/badge/all_contributors-<%= contributors.length %>-orange.svg?style=flat-square)](#contributors-)\n<!-- ALL-CONTRIBUTORS-BADGE:END -->"
+}
