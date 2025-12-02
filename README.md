@@ -323,8 +323,31 @@ Contributions are welcome! Please open an issue or submit a pull request.
 
 <!-- readme: collaborators,contributors -start -->
 <table>
-<tbody>
-</tbody>
+	<tbody>
+		<tr>
+            <td align="center">
+                <a href="https://github.com/kristoferlund">
+                    <img src="https://avatars.githubusercontent.com/u/9698363?v=4" width="100;" alt="kristoferlund"/>
+                    <br />
+                    <sub><b>Kristofer</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/andrepadez">
+                    <img src="https://avatars.githubusercontent.com/u/1013997?v=4" width="100;" alt="andrepadez"/>
+                    <br />
+                    <sub><b>Pastilhas</b></sub>
+                </a>
+            </td>
+            <td align="center">
+                <a href="https://github.com/axo-bot">
+                    <img src="https://avatars.githubusercontent.com/u/142847116?v=4" width="100;" alt="axo-bot"/>
+                    <br />
+                    <sub><b>axo bot</b></sub>
+                </a>
+            </td>
+		</tr>
+	<tbody>
 </table>
 <!-- readme: collaborators,contributors -end -->
 
