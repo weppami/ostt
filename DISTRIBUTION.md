@@ -16,10 +16,10 @@ ostt/
 │       └── alacritty-float.toml # Terminal configuration
 ├── Cargo.toml                   # Rust package manifest
 ├── dist-workspace.toml          # cargo-dist configuration
-├── PKGBUILD                     # Arch User Repository package
-├── ostt.rb                      # Homebrew formula
 └── README.md                    # Main documentation
 ```
+
+**Note:** The AUR PKGBUILD is maintained in the separate [AUR repository](https://aur.archlinux.org/packages/ostt), not in this repository.
 
 **Note:** Configuration files in `environments/` are embedded into the binary at compile time using `include_str!()`. They are automatically extracted on first run.
 
@@ -282,13 +282,48 @@ Unlike Homebrew Core, **anyone can publish to the AUR**. It's a community-mainta
    cd aur-ostt
    ```
 
-3. **Copy and generate files:**
+3. **Create PKGBUILD file:**
    ```bash
-   # Copy PKGBUILD from this repo
-   cp /path/to/ostt-build/PKGBUILD .
+   # Create PKGBUILD with the following content
+   # (See example below)
    
    # Generate .SRCINFO (required by AUR)
    makepkg --printsrcinfo > .SRCINFO
+   ```
+
+   Example PKGBUILD:
+   ```bash
+   # Maintainer: Kristofer Lund <kristoferlund@users.noreply.github.com>
+   pkgname=ostt
+   pkgver=0.0.3
+   pkgrel=1
+   pkgdesc="Open Speech-to-Text: Terminal application for recording and transcribing audio"
+   arch=('x86_64' 'aarch64')
+   url="https://github.com/kristoferlund/ostt"
+   license=('MIT')
+   depends=('alsa-lib' 'openssl' 'ffmpeg')
+   optdepends=('wl-clipboard: Clipboard support on Wayland'
+               'xclip: Clipboard support on X11')
+   makedepends=('cargo' 'rust' 'git' 'pkgconf')
+   options=('!lto')
+   source=("${pkgname}-${pkgver}.tar.gz::https://github.com/kristoferlund/ostt/archive/refs/tags/v${pkgver}.tar.gz")
+   sha256sums=('SKIP')
+   
+   build() {
+     cd "ostt-${pkgver}"
+     cargo build --release --locked
+   }
+   
+   package() {
+     cd "ostt-${pkgver}"
+     install -Dm755 target/release/ostt "${pkgdir}/usr/bin/ostt"
+     install -Dm644 README.md "${pkgdir}/usr/share/doc/ostt/README.md"
+   }
+   
+   check() {
+     cd "ostt-${pkgver}"
+     cargo test --release --locked
+   }
    ```
 
 4. **Publish to AUR:**
@@ -351,8 +386,7 @@ Example workflow snippet:
 ## Release Process
 
 1. **Update version** in `Cargo.toml`
-2. **Update version** in `PKGBUILD` (for AUR)
-3. **Build and test locally:**
+2. **Build and test locally:**
    ```bash
    cargo build --profile dist
    cargo test
