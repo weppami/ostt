@@ -88,6 +88,9 @@ pub async fn transcribe(
     if deepgram_config.mip_opt_out {
         url.push_str("&mip_opt_out=true");
     }
+    if deepgram_config.detect_language {
+        url.push_str("&detect_language=true");
+    }
 
     // Add keywords/keyterms if any (nova-3 uses keyterms, nova-2 uses keywords)
     if !config.keywords.is_empty() {

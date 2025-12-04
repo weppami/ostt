@@ -3,7 +3,7 @@
 **ostt** is an interactive terminal-based audio recording and speech-to-text transcription tool. Record audio with real-time waveform visualization, automatically transcribe using multiple AI providers and models, and maintain a browsable history of all your transcriptions. Built with Rust for performance and minimal dependencies, ostt works seamlessly on **Linux and macOS**.
 
 > [!TIP]
-> **Omarchy and Hyprland users!** Configure ostt to run as a floating popup window to record and transcribe in any app. 
+> **Hyprland users!** Configure ostt to run as a floating popup window to record and transcribe in any app. 
 
 <video src="https://github.com/user-attachments/assets/488e16b1-5d9a-4ccb-9aef-1a42d1204018" controls width="600">
   Your browser does not support the video tag.
@@ -16,8 +16,11 @@
 - Configurable reference level for clipping detection
 - Audio clipping detection with pause/resume support
 - Audio compression for fast API calls
-- Multiple transcription providers (OpenAI, Deepgram, Local Parakeet)
-- **Offline transcription** with local Parakeet models (no API required)
+- Multiple transcription providers:
+  - **OpenAI** (Whisper, GPT-4o Transcribe models)
+  - **Deepgram** (Nova 2, Nova 3 with language auto-detection)
+  - **Local Parakeet** (offline, no API required)
+- **Offline transcription** with local Parakeet models (no API costs, full privacy)
 - Browsable transcription history
 - Keyword management for improved accuracy
 - Cross-platform: Linux and macOS support
@@ -94,7 +97,7 @@ For the best experience, configure ostt to run as a floating popup window tied t
 
 Platform-specific setup instructions:
 
-- **[Hyprland / Omarchy Setup](environments/hyprland/README.md)** - Tiling window manager integration (recommended)
+- **[Hyprland Setup](environments/hyprland/README.md)** - Wayland compositor integration (recommended)
 - **[macOS Setup](environments/macOS/README.md)** - Hammerspoon-based popup configuration
 
 ### Other Platforms
@@ -286,6 +289,47 @@ ostt auth
 
 Local models save as WAV (no compression), cloud models use MP3 (faster upload). This happens automatically!
 
+### Provider-Specific Configuration
+
+#### Deepgram Options
+
+ostt supports all major Deepgram features. Add these to your `ostt.toml` under `[providers.deepgram]`:
+
+```toml
+[providers.deepgram]
+# Language detection - automatically detect from 35 supported languages
+detect_language = false      # Set to true to enable auto-detection
+
+# Formatting options
+punctuate = true             # Add punctuation and capitalization
+smart_format = false         # Advanced formatting (dates, times, etc.)
+paragraphs = false           # Split into paragraphs
+filler_words = false         # Include "uh", "um", etc.
+
+# Transcription enhancements
+numerals = false             # Convert numbers to digits
+measurements = false         # Convert measurements to abbreviations
+profanity_filter = false     # Filter profanity
+
+# Utterance segmentation
+utterances = false           # Segment speech into semantic units
+utt_split = 0.8              # Seconds to wait before detecting pause
+
+# Privacy
+mip_opt_out = false          # Opt out of Model Improvement Program
+```
+
+#### OpenAI Options
+
+OpenAI Whisper models currently have no additional configuration options beyond model selection.
+
+#### Parakeet (Local) Options
+
+```toml
+[providers.parakeet]
+use_gpu = false              # Enable GPU acceleration (requires CUDA/ROCm)
+```
+
 ### Example Configuration
 
 ```toml
@@ -299,7 +343,7 @@ output_format = "mp3 -ab 16k -ar 12000"
 [providers.deepgram]
 punctuate = true
 smart_format = false
-filler_words = false
+detect_language = false
 ```
 
 For detailed configuration options, see the config file comments or run `ostt config` to edit.
@@ -356,9 +400,6 @@ Add technical terms, names, or domain-specific vocabulary to help the AI transcr
 ├── models/                # Local model storage
 │   ├── parakeet-tdt-v2/  # English-only model (if downloaded)
 │   └── parakeet-tdt-v3/  # Multilingual model (if downloaded)
-└── hyprland/              # Hyprland integration (if set up)
-    ├── ostt-float.sh
-    └── alacritty-float.toml
 
 ~/.local/share/ostt/
 ├── credentials            # API keys (0600 permissions)
@@ -367,6 +408,10 @@ Add technical terms, names, or domain-specific vocabulary to help the AI transcr
 
 ~/.local/state/ostt/
 └── ostt.log.*             # Daily-rotated logs
+
+~/.local/bin/              # Integration scripts (if using Hyprland)
+├── ostt-float             # Floating window launcher
+└── ostt-run               # Binary wrapper with library path
 ```
 
 ## Troubleshooting

@@ -73,6 +73,9 @@ pub struct DeepgramConfig {
     /// Opt out from Deepgram Model Improvement Program
     #[serde(default)]
     pub mip_opt_out: bool,
+    /// Automatically detect language from 35 supported languages
+    #[serde(default)]
+    pub detect_language: bool,
 }
 
 fn default_utt_split() -> f64 {
@@ -92,6 +95,7 @@ impl Default for DeepgramConfig {
             utterances: false,
             utt_split: default_utt_split(),
             mip_opt_out: false,
+            detect_language: false,
         }
     }
 }
